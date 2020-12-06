@@ -8,7 +8,7 @@ import (
 
 // Part1 solves the first part of the day's puzzle
 func Part1(ctx context.Context, input string) (interface{}, error) {
-	entries := strings.Split(strings.TrimSpace(input), "\n")
+	entries := strings.Split(input, "\n")
 
 	var valid int
 	for _, password := range entries {

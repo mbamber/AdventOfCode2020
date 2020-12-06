@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"path/filepath"
 	"runtime"
+	"strings"
 )
 
 func Load(day int) string {
@@ -14,7 +15,7 @@ func Load(day int) string {
 		panic(err)
 	}
 
-	return string(contents)
+	return strings.TrimSpace(string(contents))
 }
 
 func generateFilename(day int) string {

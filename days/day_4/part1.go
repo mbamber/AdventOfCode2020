@@ -7,7 +7,7 @@ import (
 
 // Part1 solves the first part of the day's puzzle
 func Part1(ctx context.Context, input string) (interface{}, error) {
-	records := parse(strings.Split(strings.TrimSpace(input), "\n\n"))
+	records := parse(strings.Split(input, "\n\n"))
 
 	valid := 0
 	for _, record := range records {

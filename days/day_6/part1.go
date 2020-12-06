@@ -7,7 +7,7 @@ import (
 
 // Part1 solves the first part of the day's puzzle
 func Part1(ctx context.Context, input string) (interface{}, error) {
-	groups := strings.Split(strings.TrimSpace(input), "\n\n")
+	groups := strings.Split(input, "\n\n")
 
 	return Count(groups, any), nil
 }

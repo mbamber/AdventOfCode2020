@@ -9,7 +9,7 @@ import (
 
 // Part2 solves the second part of the day's puzzle
 func Part2(ctx context.Context, input string) (interface{}, error) {
-	records := parse(strings.Split(strings.TrimSpace(input), "\n\n"))
+	records := parse(strings.Split(input, "\n\n"))
 
 	hclRegexp := regexp.MustCompile(`^#[0-9a-f]{6}$`)
 	pidRegexp := regexp.MustCompile(`^[0-9]{9}$`)
