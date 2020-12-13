@@ -1,6 +1,12 @@
 package coordinate
 
-import "math"
+import (
+	"fmt"
+	"log"
+	"math"
+
+	"github.com/golang/geo/s1"
+)
 
 // Cartesian represents a cartesian (x,y,z) coordinate pair
 type Cartesian struct {
@@ -87,4 +93,46 @@ func (c Cartesian) ManhattanDistance(coord Coordinate) int {
 	z := math.Abs(float64(c.Z - coord.AsCartesian().Z))
 
 	return int(x + y + z)
+}
+
+// Rotate the coordinate about the origin by `angle` in a 2D (x,y) plane
+func (c Cartesian) Rotate(angle s1.Angle) (Coordinate, error) {
+	epsilon := 1e-13
+
+	// Matrix multiplication
+	sin, cos := math.Sincos(angle.Radians())
+	x, y := float64(c.X), float64(c.Y)
+	newX := cos*x + sin*y
+	newY := -1*sin*x + cos*y // Note the -1 here to rotate clockwise
+
+	// Due to floating point arithmetic, we need to check if the new values are within
+	// an epsilon of their truncated values. Use `math.Round()` in case the error is negative
+	if math.Abs(newX-math.Round(newX)) <= epsilon {
+		newX = math.Round(newX)
+	}
+	if math.Abs(newY-math.Round(newY)) <= epsilon {
+		newY = math.Round(newY)
+	}
+
+	if math.Trunc(newX) != newX || math.Trunc(newY) != newY {
+		log.Printf("[ERROR] rotation leads to %.10f, %.10f\n", newX, newY)
+		return Origin, fmt.Errorf("cannot rotate by %f degrees to a new integer coordinate", angle.Degrees())
+	}
+
+	return NewCartesian2D(int(newX), int(newY)), nil
+}
+
+// RotateAbout the given coordinate by `angle` in a 2D (x,y) plane
+func (c Cartesian) RotateAbout(angle s1.Angle, about Coordinate) (Coordinate, error) {
+	c.X, c.Y = c.X-about.AsCartesian().X, c.Y-about.AsCartesian().Y
+
+	new, err := c.Rotate(angle)
+	if err != nil {
+		return Origin, err
+	}
+
+	newC := new.AsCartesian()
+	newC.X, newC.Y = newC.X+about.AsCartesian().X, newC.Y+about.AsCartesian().Y
+
+	return newC, nil
 }
