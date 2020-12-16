@@ -10,7 +10,7 @@ import (
 )
 
 func TestPart1Answer(t *testing.T) {
-	expected := 13496669152158
+	expected := int64(13496669152158)
 
 	input := inputs.Load(14)
 	out, err := main.Part1(context.Background(), input)
