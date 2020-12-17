@@ -72,6 +72,26 @@ func (c Cartesian) Diagonal() []Cartesian {
 	return diag
 }
 
+// Surrounding returns all coordinates that surround the given coordinate
+func (c Cartesian) Surrounding() []Cartesian {
+	idx := []int{-1, 0, 1}
+	surr := []Cartesian{}
+
+	for _, x := range idx {
+		for _, y := range idx {
+			for _, z := range idx {
+				if x == 0 && y == 0 && z == 0 {
+					continue
+				}
+
+				surr = append(surr, NewCartesian(c.X+x, c.Y+y, c.Z+z))
+			}
+		}
+	}
+
+	return surr
+}
+
 // AsCartesian returns the coordinate unchanged
 func (c Cartesian) AsCartesian() Cartesian {
 	return c

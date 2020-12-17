@@ -14,11 +14,11 @@ func Part2(ctx context.Context, input string) (interface{}, error) {
 	old := coordinate.NewStringGridFromStrings(lines, ".")
 	new := coordinate.NewStringGridFromStrings(lines, ".")
 
-	rows, cols := old.Dimensions()
+	rows, cols, _ := old.Dimensions()
 
 	// Build a list of all adjacent seats
 	seatsToCheck := map[coordinate.Cartesian][]coordinate.Cartesian{}
-	old.Iterate(func(x, y int, _ string) (stop bool, err error) {
+	old.Iterate(func(x, y, _ int, _ string) (stop bool, err error) {
 		c := coordinate.NewCartesian2D(x, y)
 		dxdy := []int{-1, 0, 1}
 		seats := []coordinate.Cartesian{}
@@ -41,7 +41,7 @@ func Part2(ctx context.Context, input string) (interface{}, error) {
 	})
 
 	for {
-		old.Iterate(func(x, y int, _ string) (stop bool, err error) {
+		old.Iterate(func(x, y, _ int, _ string) (stop bool, err error) {
 			c := coordinate.NewCartesian2D(x, y)
 			if old.Get(c) != "." {
 				updateSeat(old, new, c, seatsToCheck[c], rows, cols, 5)
@@ -68,7 +68,7 @@ func getFirstSeat(g coordinate.StringGrid, c coordinate.Cartesian, dx, dy, maxRo
 			return coordinate.Origin.AsCartesian(), errors.New("out of range")
 		}
 
-		if g.GetAt(x, y) != "." {
+		if g.GetAt(x, y, 0) != "." {
 			return coordinate.NewCartesian2D(x, y), nil
 		}
 

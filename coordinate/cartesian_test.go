@@ -143,3 +143,50 @@ func TestRotateAbout(t *testing.T) {
 		})
 	}
 }
+
+func TestSurrounding(t *testing.T) {
+	cases := map[string]struct {
+		c        coordinate.Cartesian
+		expected []coordinate.Cartesian
+	}{
+		"points surrounding origin": {
+			c: coordinate.Origin.AsCartesian(),
+			expected: []coordinate.Cartesian{
+				coordinate.NewCartesian(-1, -1, -1),
+				coordinate.NewCartesian(-1, -1, 0),
+				coordinate.NewCartesian(-1, -1, 1),
+				coordinate.NewCartesian(-1, 0, -1),
+				coordinate.NewCartesian(-1, 0, 0),
+				coordinate.NewCartesian(-1, 0, 1),
+				coordinate.NewCartesian(-1, 1, -1),
+				coordinate.NewCartesian(-1, 1, 0),
+				coordinate.NewCartesian(-1, 1, 1),
+				coordinate.NewCartesian(0, -1, -1),
+				coordinate.NewCartesian(0, -1, 0),
+				coordinate.NewCartesian(0, -1, 1),
+				coordinate.NewCartesian(0, 0, -1),
+				coordinate.NewCartesian(0, 0, 1),
+				coordinate.NewCartesian(0, 1, -1),
+				coordinate.NewCartesian(0, 1, 0),
+				coordinate.NewCartesian(0, 1, 1),
+				coordinate.NewCartesian(1, -1, -1),
+				coordinate.NewCartesian(1, -1, 0),
+				coordinate.NewCartesian(1, -1, 1),
+				coordinate.NewCartesian(1, 0, -1),
+				coordinate.NewCartesian(1, 0, 0),
+				coordinate.NewCartesian(1, 0, 1),
+				coordinate.NewCartesian(1, 1, -1),
+				coordinate.NewCartesian(1, 1, 0),
+				coordinate.NewCartesian(1, 1, 1),
+			},
+		},
+	}
+
+	for name, data := range cases {
+		t.Run(name, func(t *testing.T) {
+			s := data.c.Surrounding()
+			assert.Len(t, s, len(data.expected))
+			assert.Equal(t, data.expected, s)
+		})
+	}
+}

@@ -15,7 +15,7 @@ func Part1(ctx context.Context, input string) (interface{}, error) {
 
 	// Build a list of all adjacent seats
 	seatsToCheck := map[coordinate.Cartesian][]coordinate.Cartesian{}
-	old.Iterate(func(x, y int, _ string) (stop bool, err error) {
+	old.Iterate(func(x, y, _ int, _ string) (stop bool, err error) {
 		c := coordinate.NewCartesian2D(x, y)
 		s := c.Diagonal()
 		s = append(s, c.Adjacent()...)
@@ -38,9 +38,9 @@ func Part1(ctx context.Context, input string) (interface{}, error) {
 		return false, nil
 	})
 
-	rows, cols := old.Dimensions()
+	rows, cols, _ := old.Dimensions()
 	for {
-		old.Iterate(func(x, y int, _ string) (stop bool, err error) {
+		old.Iterate(func(x, y, _ int, _ string) (stop bool, err error) {
 			c := coordinate.NewCartesian2D(x, y)
 			if old.Get(c) != "." {
 				updateSeat(old, new, c, seatsToCheck[c], rows, cols, 4)
